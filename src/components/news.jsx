@@ -38,7 +38,6 @@ class News extends Component {
   handleSearch = query => {
     this.setState({ searchQuery: query });
     let filteredArray = this.getFilteredArray();
-    console.log("FILTERED ARRAY: ", filteredArray);
     if (filteredArray === undefined || filteredArray.length === 0) {
       toast.error("Ingen nyhetsartikel finns");
     }
@@ -91,7 +90,7 @@ class News extends Component {
         <ToastContainer />
         <div className="App">
           <section>
-            <h1>Current Corona News</h1>
+            <h1>Corona News</h1>
           </section>
           <button
             type="button"
