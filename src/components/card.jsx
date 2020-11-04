@@ -12,6 +12,7 @@ class Card extends Component {
 
     handleDetails = () => {
         this.setState({ showDetails: true });
+        console.log("Details Clicked");
         console.log(this.props.newsItem);
     };
 
@@ -34,16 +35,15 @@ class Card extends Component {
                     <p>{link}</p>
                     <p>Publish date: {pubDate}</p>
 
-                    <div />
-                </div>
+                <div />
+            </div>
                 <button
                     type="button"
                     className="btn btn-primary"
                     onClick={() => this.handleDetails()}
                 >
                     Läs mer
-        </button>
-
+                </button>  
             </div>
         );
     }

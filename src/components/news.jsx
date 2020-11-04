@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import config from "../config";
-import Card from "./card";
+import Card from "./Card";
 import "../App.css";
 import "../App.scss";
 import SearchBox from "../common/searchbox";
@@ -14,7 +14,7 @@ let parser = new Parser();
 class News extends Component {
   state = {
     newsItems: [],
-    searchQuery: "corona",
+    searchQuery: "",
     newsItem: []
   };
 
@@ -34,6 +34,14 @@ class News extends Component {
     });
   };
 
+  handleLike = news => {
+    const newsItems = this.getFilteredArray();
+    const index = newsItems.indexOf(news);
+    newsItems[index] = { ...newsItems[index] };
+    newsItems[index].liked = !newsItems[index].liked;
+    this.setState({ newsItems });
+    console.log("Liked Clicked");
+  };
 
   handleSearch = query => {
     this.setState({ searchQuery: query });
@@ -49,17 +57,19 @@ class News extends Component {
   };
 
   async componentDidMount() {
-    const { items: newsItems } = await parser.parseURL(config.apiEndpoint
+    const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+    const { items: newsItems } = await parser.parseURL(
+      CORS_PROXY + config.apiEndpoint
     );
 
     let firstIndex = 0;
-    newsItems.forEach(function (element) {
+    newsItems.forEach(function(element) {
       element.index = firstIndex++;
     });
     this.setState({ newsItems });
     const temp = newsItems[0];
     this.setState({ newsItem: temp });
-    //toast.info("Hämtning av RSS-flöde lyckades!");
+    toast.info("Fetching of news succeeded!");
   }
 
   getFilteredArray() {
@@ -90,7 +100,7 @@ class News extends Component {
         <ToastContainer />
         <div className="App">
           <section>
-            <h1>Corona News</h1>
+            <h1>News</h1>
           </section>
           <button
             type="button"
