@@ -26,21 +26,19 @@ class News extends Component {
     hasLoadedNews: false,
     initialLoad: true
   };
-  
-  
-  
+
+
+
   displayFirstNewsTitle = () => {
-    
-      const newsItems = this.getFilteredArray();      
-      newsItems.map(newsItem =>{
-        console.log("NEWS ITEM:", newsItem);
-        return newsItem.title
-      })
+
+    const newsItems = this.getFilteredArray();
+    console.log("NEWS ITEM: ", newsItems);
+    return newsItems[0].title;
   }
 
   firstNews = () => {
     const newsItems = this.getFilteredArray();
-   // const newIndex = this.state.newsItem.index + 1;
+    // const newIndex = this.state.newsItem.index + 1;
     this.setState({
       newsItem: newsItems[0]
     });
@@ -53,7 +51,7 @@ class News extends Component {
       newsItem: newsItems[newIndex]
     });
   };
-  
+
 
   prevNews = () => {
     const newsItems = this.getFilteredArray();
@@ -85,6 +83,14 @@ class News extends Component {
 
   };
 
+  fetchLoadedNews() {
+    if (this.state.hasLoadedNews) {
+      return this.state.newsItems
+    } else {
+      return "NOT LOADED";
+    }
+  }
+
   async componentDidMount() {
     const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
     const { items: newsItems } = await parser.parseURL(
@@ -105,14 +111,14 @@ class News extends Component {
 
 
     let firstIndex = 0;
-    newsItems.forEach(function(element) {
+    newsItems.forEach(function (element) {
       element.index = firstIndex++;
     });
     this.setState({ newsItems });
     const temp = newsItems[0];
     this.setState({ newsItem: temp });
-    this.setState({hasLoadedNews: true})
-    }
+    this.setState({ hasLoadedNews: true })
+  }
 
   getFilteredArray() {
     const { newsItems: allNews, searchQuery } = this.state;
@@ -134,39 +140,32 @@ class News extends Component {
   }
 
   render() {
-    const { newsItem, searchQuery, hasLoadedNews} = this.state;
+    const { newsItem, newsItems, searchQuery, hasLoadedNews } = this.state;
     let allNews = this.getFilteredArray();
-    let newsTransitionText;
-    if(hasLoadedNews){
-      newsTransitionText=
-      <ReactTextTransition
-                text={this.displayFirstNewsTitle()}
-                spring={presets.wobbly}
-                className="big"
-                delay={300}
-                inline
-              />
+    let placeholder;
+    if (hasLoadedNews) {
+      console.log("NEWS ITEMS: ", newsItems[0])
+      placeholder = newsItems[0].title
+    } else {
+      placeholder = "HAS NOT LOADED"
     }
-    else{
-      newsTransitionText=
-      <ReactTextTransition
-                text="has not loaded"
-                spring={presets.wobbly}
-                className="big"
-                delay={300}
-                inline
-              />
-    }
+
     return (
       <React.Fragment>
         <ToastContainer />
         <div className="App">
           <section>
-          
-          {newsTransitionText}
-              
+
+            <ReactTextTransition
+              text={placeholder}
+              spring={presets.wobbly}
+              className="big"
+              delay={300}
+              inline
+            />
+
           </section>
-      
+
           <button
             type="button"
             className="btn btn-primary"
@@ -184,7 +183,7 @@ class News extends Component {
           >
             Previous
           </button>
-          
+
           <button
             type="button"
             className="btn btn-primary"
@@ -193,7 +192,7 @@ class News extends Component {
           >
             Next
           </button>
-          
+
 
           <div className="page">
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
