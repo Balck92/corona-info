@@ -12,7 +12,6 @@ class Card extends Component {
 
     handleDetails = () => {
         this.setState({ showDetails: true });
-        console.log("Details Clicked");
         console.log(this.props.newsItem);
     };
 

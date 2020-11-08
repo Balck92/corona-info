@@ -41,7 +41,7 @@ export default class Loading extends React.Component {
                         this.setState({ done: true });
                     }, 1000);
                 });
-        }, 3000);
+        }, 1000);
     }
     render() {
         return (

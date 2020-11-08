@@ -7,25 +7,36 @@ import SearchBox from "../common/searchbox";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import TextTransition, { presets } from "react-text-transition";
+import ReactTextTransition, { presets } from "react-text-transition";
 
 let Parser = require("rss-parser");
 let parser = new Parser();
 
-const TEXTS = [
-  "Forest",
-  "Building",
-  "Tree",
-  "Color"
-];
+const randomNumber = () => Math.floor(Math.random() * 9999999999 + 10000000000);
 
 class News extends Component {
   state = {
     newsItems: [],
     searchQuery: "",
-    newsItem: []
+    newsItem: [],
+    textIndex: 0,
+    textFastIndex: 0,
+    paragraphIndex: 0,
+    number: randomNumber(),
+    hasLoadedNews: false,
+    initialLoad: true
   };
   
+  
+  
+  displayFirstNewsTitle = () => {
+    
+      const newsItems = this.getFilteredArray();      
+      newsItems.map(newsItem =>{
+        console.log("NEWS ITEM:", newsItem);
+        return newsItem.title
+      })
+  }
 
   firstNews = () => {
     const newsItems = this.getFilteredArray();
@@ -79,6 +90,18 @@ class News extends Component {
     const { items: newsItems } = await parser.parseURL(
       CORS_PROXY + config.apiEndpoint
     );
+    setInterval(() => {
+      this.setState({
+        number: randomNumber(),
+        textIndex: this.state.textIndex + 1,
+        paragraphIndex: this.state.paragraphIndex + 1
+      });
+    }, 4000);
+    setInterval(() => {
+      this.setState({
+        textFastIndex: this.state.textFastIndex + 1
+      });
+    }, 150);
 
 
     let firstIndex = 0;
@@ -88,6 +111,7 @@ class News extends Component {
     this.setState({ newsItems });
     const temp = newsItems[0];
     this.setState({ newsItem: temp });
+    this.setState({hasLoadedNews: true})
     }
 
   getFilteredArray() {
@@ -110,17 +134,39 @@ class News extends Component {
   }
 
   render() {
-    const { newsItem, searchQuery } = this.state;
+    const { newsItem, searchQuery, hasLoadedNews} = this.state;
     let allNews = this.getFilteredArray();
-
+    let newsTransitionText;
+    if(hasLoadedNews){
+      newsTransitionText=
+      <ReactTextTransition
+                text={this.displayFirstNewsTitle()}
+                spring={presets.wobbly}
+                className="big"
+                delay={300}
+                inline
+              />
+    }
+    else{
+      newsTransitionText=
+      <ReactTextTransition
+                text="has not loaded"
+                spring={presets.wobbly}
+                className="big"
+                delay={300}
+                inline
+              />
+    }
     return (
       <React.Fragment>
         <ToastContainer />
         <div className="App">
           <section>
-          <h1>News</h1>
+          
+          {newsTransitionText}
+              
           </section>
-    
+      
           <button
             type="button"
             className="btn btn-primary"
