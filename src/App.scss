@@ -95,8 +95,11 @@ body {
     transition: transform 200ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
     color: black;
     .card {
+      height: auto;
+      right: 115px;
       flex: 1;
       min-width: 500px;
+      max-height: 540px;
       opacity: 0.5;
       transform: scale(0.7);
       transition: opacity 300ms linear transform 300ms
@@ -121,9 +124,10 @@ body {
     }
     &:after {
       content: "";
+      right: 130px;
       display: block;
-      width: 94%;
-      height: 460px;
+      width: 1500px;
+      height: 530px;
       outline: 5px solid red;
       position: absolute;
       top: 0;

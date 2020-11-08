@@ -3,13 +3,13 @@ import FadeIn from "react-fade-in";
 import Lottie from "react-lottie";
 import News from "./components/news";
 import "bootstrap/dist/css/bootstrap.css";
-import * as coronaLoader from "./loading.json";
+import * as newsLoader from "./newsLoader.json";
 import * as doneData from "./doneloading.json";
 
 const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: coronaLoader.default,
+    animationData: newsLoader.default,
     rendererSettings: {
         preserveAspectRatio: "xMidYMid slice"
     }
@@ -49,7 +49,7 @@ export default class Loading extends React.Component {
                 {!this.state.done ? (
                     <FadeIn>
                         <div className="d-flex justify-content-center align-items-center">
-                            <h1>Fetching latest Corona news</h1>
+                            <h1>Fetching latest news</h1>
                             {!this.state.loading ? (
                                 <Lottie options={defaultOptions} height={240} width={240} />
                             ) : (

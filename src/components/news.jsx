@@ -1,21 +1,38 @@
 import React, { Component } from "react";
 import config from "../config";
-import Card from "./Card";
+import Card from "./card";
 import "../App.css";
 import "../App.scss";
 import SearchBox from "../common/searchbox";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import TextTransition, { presets } from "react-text-transition";
 
 let Parser = require("rss-parser");
 let parser = new Parser();
+
+const TEXTS = [
+  "Forest",
+  "Building",
+  "Tree",
+  "Color"
+];
 
 class News extends Component {
   state = {
     newsItems: [],
     searchQuery: "",
     newsItem: []
+  };
+  
+
+  firstNews = () => {
+    const newsItems = this.getFilteredArray();
+   // const newIndex = this.state.newsItem.index + 1;
+    this.setState({
+      newsItem: newsItems[0]
+    });
   };
 
   nextNews = () => {
@@ -25,6 +42,7 @@ class News extends Component {
       newsItem: newsItems[newIndex]
     });
   };
+  
 
   prevNews = () => {
     const newsItems = this.getFilteredArray();
@@ -62,6 +80,7 @@ class News extends Component {
       CORS_PROXY + config.apiEndpoint
     );
 
+
     let firstIndex = 0;
     newsItems.forEach(function(element) {
       element.index = firstIndex++;
@@ -69,8 +88,7 @@ class News extends Component {
     this.setState({ newsItems });
     const temp = newsItems[0];
     this.setState({ newsItem: temp });
-    toast.info("Fetching of news succeeded!");
-  }
+    }
 
   getFilteredArray() {
     const { newsItems: allNews, searchQuery } = this.state;
@@ -100,8 +118,18 @@ class News extends Component {
         <ToastContainer />
         <div className="App">
           <section>
-            <h1>News</h1>
+          <h1>News</h1>
           </section>
+    
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => this.firstNews()}
+            disabled={newsItem.index === allNews.length - 1}
+          >
+            Go to start
+          </button>
+
           <button
             type="button"
             className="btn btn-primary"
@@ -110,6 +138,7 @@ class News extends Component {
           >
             Previous
           </button>
+          
           <button
             type="button"
             className="btn btn-primary"
@@ -118,6 +147,7 @@ class News extends Component {
           >
             Next
           </button>
+          
 
           <div className="page">
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
