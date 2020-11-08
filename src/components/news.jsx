@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import config from "../config";
 import Card from "./card";
+import Transition from "./transition";
 import "../App.css";
 import "../App.scss";
 import SearchBox from "../common/searchbox";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
 import ReactTextTransition, { presets } from "react-text-transition";
+import { toast } from "react-toastify";
 
 let Parser = require("rss-parser");
 let parser = new Parser();
@@ -17,6 +18,7 @@ const randomNumber = () => Math.floor(Math.random() * 9999999999 + 10000000000);
 class News extends Component {
   state = {
     newsItems: [],
+    titleArray: [],
     searchQuery: "",
     newsItem: [],
     textIndex: 0,
@@ -29,12 +31,12 @@ class News extends Component {
 
 
 
-  displayFirstNewsTitle = () => {
+  // displayFirstNewsTitle = () => {
 
-    const newsItems = this.getFilteredArray();
-    console.log("NEWS ITEM: ", newsItems);
-    return newsItems[0].title;
-  }
+  //   const newsItems = this.getFilteredArray();
+  //   console.log("NEWS ITEM: ", newsItems);
+  //   return newsItems[0].title;
+  // }
 
   firstNews = () => {
     const newsItems = this.getFilteredArray();
@@ -109,7 +111,6 @@ class News extends Component {
       });
     }, 150);
 
-
     let firstIndex = 0;
     newsItems.forEach(function (element) {
       element.index = firstIndex++;
@@ -118,6 +119,11 @@ class News extends Component {
     const temp = newsItems[0];
     this.setState({ newsItem: temp });
     this.setState({ hasLoadedNews: true })
+    let allNews = this.getFilteredArray();
+    let result = allNews.map(a => a.title);
+    this.setState({ titleArray: result })
+
+
   }
 
   getFilteredArray() {
@@ -139,30 +145,27 @@ class News extends Component {
     return filteredNews;
   }
 
+
   render() {
-    const { newsItem, newsItems, searchQuery, hasLoadedNews } = this.state;
+    const { newsItem, searchQuery, hasLoadedNews, titleArray } = this.state;
     let allNews = this.getFilteredArray();
-    let placeholder;
-    if (hasLoadedNews) {
-      console.log("NEWS ITEMS: ", newsItems[0])
-      placeholder = newsItems[0].title
-    } else {
-      placeholder = "HAS NOT LOADED"
-    }
 
     return (
       <React.Fragment>
         <ToastContainer />
         <div className="App">
           <section>
-
-            <ReactTextTransition
-              text={placeholder}
-              spring={presets.wobbly}
-              className="big"
-              delay={300}
-              inline
-            />
+            {hasLoadedNews ? (
+              <ReactTextTransition
+                text={titleArray[this.state.textIndex % titleArray.length]}
+                spring={presets.gentle}
+                className="big"
+                delay={300}
+                inline
+              />
+            ) : (
+                <h1>NO NEWS LOADED</h1>
+              )}
 
           </section>
 
@@ -216,7 +219,7 @@ class News extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
+      </React.Fragment >
     );
   }
 }
