@@ -8,6 +8,13 @@ body {
   .App {
     text-align: center;
     position: relative;
+
+    .big{
+      height: 298px;
+      font-size: 32px;
+      width: 476px;
+      text-align: center;
+    }
   }
   .App-header {
     background-color: #282c34;

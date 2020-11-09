@@ -154,12 +154,11 @@ class News extends Component {
       <React.Fragment>
         <ToastContainer />
         <div className="App">
-          <section>
+          <section className="big">
             {hasLoadedNews ? (
               <ReactTextTransition
                 text={titleArray[this.state.textIndex % titleArray.length]}
                 spring={presets.gentle}
-                className="big"
                 delay={300}
                 inline
               />
