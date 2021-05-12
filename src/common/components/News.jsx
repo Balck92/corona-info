@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import config from "../config";
-import Card from "./card";
-import Transition from "./transition";
-import "../App.css";
-import "../App.scss";
-import SearchBox from "../common/searchbox";
+import config from "../../config";
+import Card from "./Card";
+import"../../App.css";
+import "../../App.scss";
+import SearchBox from "../searchbox";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactTextTransition, { presets } from "react-text-transition";
@@ -28,15 +27,6 @@ class News extends Component {
     hasLoadedNews: false,
     initialLoad: true
   };
-
-
-
-  // displayFirstNewsTitle = () => {
-
-  //   const newsItems = this.getFilteredArray();
-  //   console.log("NEWS ITEM: ", newsItems);
-  //   return newsItems[0].title;
-  // }
 
   firstNews = () => {
     const newsItems = this.getFilteredArray();
