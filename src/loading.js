@@ -1,7 +1,7 @@
 import React from "react";
 import FadeIn from "react-fade-in";
 import Lottie from "react-lottie";
-import News from "./components/news";
+import Layout from "./common/components/Layout"
 import "bootstrap/dist/css/bootstrap.css";
 import * as newsLoader from "./newsLoader.json";
 import * as doneData from "./doneloading.json";
@@ -49,7 +49,7 @@ export default class Loading extends React.Component {
                 {!this.state.done ? (
                     <FadeIn>
                         <div className="d-flex justify-content-center align-items-center">
-                            <h1>Fetching latest news</h1>
+                            <h1>Loading</h1>
                             {!this.state.loading ? (
                                 <Lottie options={defaultOptions} height={240} width={240} />
                             ) : (
@@ -58,7 +58,7 @@ export default class Loading extends React.Component {
                         </div>
                     </FadeIn>
                 ) : (
-                        <News></News>
+                        <Layout/>
                     )}
             </div>
         )
